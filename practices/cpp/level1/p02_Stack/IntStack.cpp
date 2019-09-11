@@ -33,6 +33,12 @@ Status IntStack::push(int a)
     return SUCCESS;
 }
 
+Status IntStack::clear()
+{
+    top = 0;
+    return SUCCESS;
+}
+
 int IntStack::pop()
 {
     if (empty())

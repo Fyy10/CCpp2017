@@ -21,6 +21,7 @@ class queue
         ~queue();
 
         Status append(int a);
+        Status clear();
         int pop();
         bool empty();
         bool full();

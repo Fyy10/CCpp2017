@@ -37,6 +37,13 @@ Status queue::append(int a)
     return SUCCESS;
 }
 
+Status queue::clear()
+{
+    p1 = p2 = 0;
+    size = 0;
+    return SUCCESS;
+}
+
 int queue::pop()
 {
     if (empty())
