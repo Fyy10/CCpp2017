@@ -21,6 +21,7 @@ FFF.o : FFF.cpp FFF.h
 
 clean :
 	del *.o
+	del *.exe
 
 run : TheGame.exe
 	TheGame.exe

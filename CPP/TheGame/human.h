@@ -14,9 +14,10 @@ public:
 
 class human
 {
+protected:
     ACL_Image img;
     point pos;
-    int step;       //²½³¤
+    int step;       //æ­¥é•¿
     int selfHeight;
     int selfWidth;
 public:
@@ -24,8 +25,6 @@ public:
     human(human& h);
     ~human();
 
-    int key_move(char);     //return 0
-    //int auto_move();    //return 0
     int interact(human& obj);   //0:none    1:meet
     int draw();         //return 0
 };
