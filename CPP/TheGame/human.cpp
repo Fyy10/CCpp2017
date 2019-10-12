@@ -41,11 +41,12 @@ human::~human()
 
 int human::interact(human& obj)
 {
+	if (abs(pos.x - obj.pos.x) <= selfWidth && abs(pos.y - obj.pos.y) <= selfHeight) return 1;
     return 0;
 }
 
 int human::draw()
 {
-    putImageScale(&img, pos.x, pos.y, selfWidth, selfHeight);
+    putImageTransparent(&img, pos.x, pos.y, selfWidth, selfHeight, WHITE);
     return 0;
 }

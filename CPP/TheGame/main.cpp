@@ -20,6 +20,8 @@ const int MAXF = 5;         //max number of FFF
 int initALL();
 void usrInput(int, int);    //get user's input of direction(up down left right)
 int paint();
+int randomX();
+int randomY();
 
 int Setup()
 {
@@ -38,14 +40,12 @@ int initALL()
     setTextColor(BLACK);
     setTextSize(20);*/
     srand((unsigned)time(NULL));
-    int x, y, step;
-    x = rand() % WIDTH;
-    if (x > WIDTH - imgWidth) x = WIDTH - imgWidth;
-    y = rand() % HEIGHT;
-    if (y > HEIGHT - imgHeight) y = HEIGHT - imgHeight;
-    step = 10;
+    int x = randomX(), y = randomY(), step = 10;
     pusr = new boy("boy.jpg", x, y, step, imgHeight, imgWidth);
-    girl* tmp = new girl("girl.jpg");
+    x = randomX();
+    y = randomY();
+    step = 5;
+    girl* tmp = new girl("girl.jpg", x, y, step);
     girls.insert(tmp);
     return 0;
 }
@@ -60,6 +60,12 @@ void usrInput(int key, int event)
         {
             delete *itgirl;
             girls.erase(itgirl);
+            s:int x = randomX();
+            int y = randomY();
+            int step = 5;
+            girl* tmp = new girl("girl.jpg", x, y, step);
+            if (pusr->interact(*tmp)) goto s;
+            girls.insert(tmp);
         }
     }
     paint();
@@ -70,7 +76,25 @@ int paint()
     beginPaint();
     clearDevice();
     pusr->draw();
+    for (itgirl = girls.begin(); itgirl != girls.end(); itgirl++)
+	{
+		(*itgirl)->draw();
+	}
     //paintText(0, 0, "Welcome to TheGame!");
     endPaint();
     return 0;
+}
+
+int randomX()
+{
+	int tmp = rand() % WIDTH;
+    if (tmp > WIDTH - imgWidth) tmp = WIDTH - imgWidth;
+    return tmp;
+}
+
+int randomY()
+{
+	int tmp = rand() % HEIGHT;
+    if (tmp > HEIGHT - imgHeight) tmp = HEIGHT - imgHeight;
+    return tmp;
 }
