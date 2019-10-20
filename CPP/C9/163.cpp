@@ -33,6 +33,7 @@ class Date
         {
             cout << year << "-" << month << "-" << day << endl;
         }
+        friend ostream & operator << (ostream& out, Date& din);
 };
 
 int Date::days(int y, int m)
@@ -49,11 +50,18 @@ int Date::days(int y, int m)
     }
 }
 
+ostream & operator << (ostream& out, Date& din)
+{
+    std::cout << din.year << "-" << din.month << "-" << din.day << std::endl;
+    return out;
+}
+
 int main()
 {
     int y, m, d;
     cin >> y >> m >> d;
     Date dt(y, m, d);
-    dt.display();
+    //dt.display();
+    cout << dt;
     return 0;
 }
