@@ -10,6 +10,8 @@ public:
     point(int px = 0, int py = 0);
     point(point& p);
     ~point();
+
+    void operator += (const point&);
 };
 
 class human

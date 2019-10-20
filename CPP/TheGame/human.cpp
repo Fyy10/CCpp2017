@@ -16,6 +16,12 @@ point::~point()
 {
 }
 
+void point::operator += (const point& p)
+{
+	x += p.x;
+	y += p.y;
+}
+
 human::human(const char* imgName, int x, int y, int step, int selfHeight, int selfWidth)
 {
     loadImage(imgName, &img);

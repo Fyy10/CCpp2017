@@ -6,6 +6,7 @@ set<girl*> girls;               //the set of girls
 set<girl*>::iterator itgirl;    //the iterator of set of girls
 set<FFF*> FFFs;                 //the set of FFFs
 set<FFF*>::iterator itFFF;      //the iterator of set of FFFs
+//stack<star*> stars;				//the set of stars
 boy* pusr;
 
 const int WIDTH = 800;      //size of new window
@@ -15,10 +16,12 @@ const int imgWidth = 100;
 const char* TITLE = "TheGame";      //title of new window
 
 const int MAXG = 20;        //max number of girl
-const int MAXF = 5;         //max number of FFF
+const int MAXF = 1;         //max number of FFF
+//const int MAXS = 2;			//max number of star
 
 int initALL();
 void usrInput(int, int);    //get user's input of direction(up down left right)
+void objAutoMove(int);		//time event of moving objects
 int paint();
 int randomX();
 int randomY();
@@ -26,8 +29,7 @@ int randomY();
 int Setup()
 {
     initALL();
-    paint();
-    registerKeyboardEvent(usrInput);
+    //paint();
     return 0;
 }
 
@@ -42,17 +44,24 @@ int initALL()
     srand((unsigned)time(NULL));
     int x = randomX(), y = randomY(), step = 10;
     pusr = new boy("boy.jpg", x, y, step, imgHeight, imgWidth);
-    x = randomX();
-    y = randomY();
-    step = 5;
-    girl* tmp = new girl("girl.jpg", x, y, step);
-    girls.insert(tmp);
+    registerTimerEvent(objAutoMove);
+    startTimer(0, 1000);		//generate new girl
+    startTimer(1, 2000);		//generate new FFF
+    startTimer(2, 50);			//girl move
+    startTimer(3, 100);			//FFF move
+    startTimer(4, 5000);		//generate new star
+    registerKeyboardEvent(usrInput);
+    paint();
     return 0;
 }
 
 void usrInput(int key, int event)
 {
     if (event != KEY_DOWN) return;
+    if (!pusr)
+	{
+		//game over (now being done now being done)
+	}
     pusr->key_move(key);
     for (itgirl = girls.begin(); itgirl != girls.end(); itgirl++)
     {
@@ -60,25 +69,82 @@ void usrInput(int key, int event)
         {
             delete *itgirl;
             girls.erase(itgirl);
-            s:int x = randomX();
-            int y = randomY();
-            int step = 5;
-            girl* tmp = new girl("girl.jpg", x, y, step);
-            if (pusr->interact(*tmp)) goto s;
-            girls.insert(tmp);
         }
     }
+    for (itFFF = FFFs.begin(); itFFF != FFFs.end(); itFFF++)
+	{
+		if (pusr->interact(**itFFF))		//game over
+		{
+			delete pusr;
+			pusr = NULL;
+		}
+	}
     paint();
+}
+
+void objAutoMove(int id)
+{
+	switch (id)
+	{
+	case 0:
+		if (girls.size() < MAXG)
+		{
+			girl* tmp = new girl("girl.jpg", randomX(), randomY(), 10, imgHeight, imgWidth, randomX() % 5 + 1, randomY() % 5 + 1);
+			girls.insert(tmp);
+		}
+		break;
+	case 1:
+		if (FFFs.size() < MAXF)
+		{
+			FFF* tmp = new FFF("FFF.jpg", randomX(), randomY(), 10, imgHeight, imgWidth, randomX() % 5 + 1, randomY() % 5 + 1);
+			FFFs.insert(tmp);
+		}
+		break;
+	case 2:
+		for (itgirl = girls.begin(); itgirl != girls.end(); itgirl++)
+		{
+			(*itgirl)->self_move();
+			if (pusr->interact(**itgirl)) girls.erase(itgirl);
+		}
+		paint();
+		break;
+	case 3:
+		for (itFFF = FFFs.begin(); itFFF != FFFs.end(); itFFF++)
+		{
+			(*itFFF)->self_move();
+			if (pusr->interact(**itFFF))		//game over
+			{
+				delete pusr;
+				pusr = NULL;
+			}
+		}
+		paint();
+		break;
+	case 4:
+		break;
+	default:;
+	}
 }
 
 int paint()
 {
     beginPaint();
     clearDevice();
-    pusr->draw();
     for (itgirl = girls.begin(); itgirl != girls.end(); itgirl++)
 	{
 		(*itgirl)->draw();
+	}
+	for (itFFF = FFFs.begin(); itFFF != FFFs.end(); itFFF++)
+	{
+		(*itFFF)->draw();
+	}
+	if (pusr)
+	{
+		pusr->draw();
+	}
+	else
+	{
+		//game over (now being done now being done)
 	}
     //paintText(0, 0, "Welcome to TheGame!");
     endPaint();

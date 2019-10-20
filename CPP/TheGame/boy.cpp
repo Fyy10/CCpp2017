@@ -2,14 +2,27 @@
 
 boy::boy(const char* imgName, int x, int y, int step, int selfHeight, int selfWidth):human(imgName, x, y, step, selfHeight, selfWidth)
 {
+	score = 0;
 }
 
 boy::boy(boy& b):human(b)
 {
+	score = b.score;
 }
 
 boy::~boy()
 {
+}
+
+int boy::incScore()
+{
+	score++;
+	return 0;
+}
+
+int boy::getScore()
+{
+	return score;
 }
 
 int boy::key_move(int key)
