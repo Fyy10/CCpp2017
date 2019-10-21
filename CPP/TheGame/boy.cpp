@@ -3,6 +3,7 @@
 boy::boy(const char* imgName, int x, int y, int step, int selfHeight, int selfWidth):human(imgName, x, y, step, selfHeight, selfWidth)
 {
 	score = 0;
+	life = 3;
 }
 
 boy::boy(boy& b):human(b)
@@ -17,12 +18,25 @@ boy::~boy()
 int boy::incScore()
 {
 	score++;
+	selfHeight += 2;
+	selfWidth += 2;
 	return 0;
 }
 
 int boy::getScore()
 {
 	return score;
+}
+
+int boy::loseLife()
+{
+	if (life) life--;
+	return 0;
+}
+
+int boy::getLife()
+{
+	return life;
 }
 
 int boy::key_move(int key)
