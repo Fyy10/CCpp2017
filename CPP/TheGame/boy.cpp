@@ -18,8 +18,8 @@ boy::~boy()
 int boy::incScore()
 {
 	score++;
-	selfHeight += 2;
-	selfWidth += 2;
+	selfHeight += 1;
+	selfWidth += 1;
 	return 0;
 }
 
@@ -37,6 +37,12 @@ int boy::loseLife()
 int boy::getLife()
 {
 	return life;
+}
+
+int boy::addLife()
+{
+	life++;
+	return 0;
 }
 
 int boy::key_move(int key)

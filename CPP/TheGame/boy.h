@@ -16,6 +16,7 @@ public:
     int getScore();
     int loseLife();			//return 0
     int getLife();
+    int addLife();			//return 0
     int key_move(int);		//return 0
 };
 #endif // BOY_H

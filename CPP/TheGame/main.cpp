@@ -1,4 +1,5 @@
 #include "main.h"
+#include "cstdio"
 
 using namespace std;
 
@@ -6,7 +7,7 @@ set<girl*> girls;               //the set of girls
 set<girl*>::iterator itgirl;    //the iterator of set of girls
 set<FFF*> FFFs;                 //the set of FFFs
 set<FFF*>::iterator itFFF;      //the iterator of set of FFFs
-//stack<star*> stars;				//the set of stars
+human* pdf;						//dog food equals human with no moving
 boy* pusr;
 
 const int WIDTH = 800;      //size of new window
@@ -16,8 +17,7 @@ const int imgWidth = 100;
 const char* TITLE = "TheGame";      //title of new window
 
 const int MAXG = 20;        //max number of girl
-const int MAXF = 1;         //max number of FFF
-//const int MAXS = 2;			//max number of star
+const int MAXF = 3;         //max number of FFF
 
 int initALL();
 void usrInput(int, int);    //get user's input of direction(up down left right)
@@ -28,7 +28,7 @@ int randomX();
 int randomY();
 int endGame();				//close all time events and disable keyboard events(now being done)
 
-bool gameOver = 0;
+int FinalScore = 0;
 
 int Setup()
 {
@@ -53,16 +53,14 @@ int initALL()
     startTimer(1, 2000);		//generate new FFF
     startTimer(2, 50);			//girl move
     startTimer(3, 100);			//FFF move
-    startTimer(4, 5000);		//generate new star
+    startTimer(4, 5000);		//generate new dog food
     registerKeyboardEvent(usrInput);
-    paint();
-    paintEnd();
     return 0;
 }
 
 void usrInput(int key, int event)
 {
-    if (event != KEY_DOWN || gameOver) return;
+    if (event != KEY_DOWN || !pusr) return;
     pusr->key_move(key);
     for (itgirl = girls.begin(); itgirl != girls.end(); itgirl++)
     {
@@ -85,9 +83,22 @@ void usrInput(int key, int event)
 			}
 			else
 			{
+				FinalScore = pusr->getScore();
 				delete pusr;
 				pusr = NULL;
+				endGame();
+				paint();
+				return;
 			}
+		}
+	}
+	if (pdf && pusr)
+	{
+		if (pusr->interact(*pdf))
+		{
+			pusr->addLife();
+			delete pdf;
+			pdf = NULL;
 		}
 	}
     paint();
@@ -95,6 +106,7 @@ void usrInput(int key, int event)
 
 void objAutoMove(int id)
 {
+	if (!pusr) return;
 	switch (id)
 	{
 	case 0:
@@ -138,14 +150,26 @@ void objAutoMove(int id)
 				}
 				else
 				{
+					FinalScore = pusr->getScore();
 					delete pusr;
 					pusr = NULL;
+					endGame();
+					paint();
+					return;
 				}
 			}
 		}
 		paint();
 		break;
 	case 4:
+		if (!pdf) pdf = new human("DogFood.jpg", randomX(), randomY(), 0, imgHeight/2, imgWidth/2);
+		if (pusr->interact(*pdf))
+		{
+			pusr->addLife();
+			delete pdf;
+			pdf = NULL;
+		}
+		paint();
 		break;
 	default:;
 	}
@@ -163,13 +187,21 @@ int paint()
 	{
 		(*itFFF)->draw();
 	}
+	if (pdf)
+	{
+		pdf->draw();
+	}
 	if (pusr)
 	{
 		pusr->draw();
+		char txt[40];
+		sprintf(txt, "Score: %d Dog Food: %d", pusr->getScore(), pusr->getLife());
+		setTextSize(20);
+		paintText(10, 10, txt);
 	}
 	else
 	{
-		endGame();
+		paintEnd();
 	}
     //paintText(0, 0, "Welcome to TheGame!");
     endPaint();
@@ -192,18 +224,19 @@ int randomY()
 
 int paintEnd()
 {
-	beginPaint();
+	//assert already in painting
 	clearDevice();
 	//output the final information of TheGame
-	paintText(10, 10, "Gameover");
-	endPaint();
+	setTextSize(50);
+	paintText(200, 100, "Game Over!");
+	char Fscore[40];
+	sprintf(Fscore, "Your final score is %d.", FinalScore);
+	paintText(100, 150, Fscore);
 	return 0;
 }
 
 int endGame()
 {
 	for (int i = 0; i <= 4; i++) cancelTimer(i);
-	gameOver = 1;
-	paintEnd();
 	return 0;
 }
