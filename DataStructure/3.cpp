@@ -68,7 +68,7 @@ class BiTree
 		{
 			if (s2[i] == p->c) break;
 		}
-		build(s2.substr(0, i), p->l);		//problem here
+		build(s2.substr(0, i), p->l);
 		build(s2.substr(i + 1, s2.length() - i - 1), p->r);
 	}
 
