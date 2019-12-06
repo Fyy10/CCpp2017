@@ -25,7 +25,8 @@ protected:
 public:
     human(const char*, int x = 0, int y = 0, int step = 10, int selfHeight = 100, int selfWidth = 100);
     human(human& h);
-    virtual ~human();
+    //virtual ~human();
+    ~human();
 
     int interact(human& obj);   //0:none    1:meet
     int draw();         //return 0

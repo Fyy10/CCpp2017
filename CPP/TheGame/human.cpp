@@ -47,7 +47,13 @@ human::~human()
 
 int human::interact(human& obj)
 {
-	if (abs(pos.x - obj.pos.x) <= selfWidth && abs(pos.y - obj.pos.y) <= selfHeight) return 1;
+	//if (abs(pos.x - obj.pos.x) <= selfWidth && abs(pos.y - obj.pos.y) <= selfHeight) return 1;
+	bool L = 0, R = 0, U = 0, D = 0;
+	if ((pos.x > obj.pos.x) && (pos.x - obj.pos.x <= obj.selfWidth)) L = 1;
+	if ((obj.pos.x > pos.x) && (obj.pos.x - pos.x <= selfWidth)) R = 1;
+	if ((pos.y > obj.pos.y) && (pos.y - obj.pos.y <= obj.selfHeight)) U = 1;
+	if ((obj.pos.y > pos.y) && (obj.pos.y - pos.y <= selfHeight)) D = 1;
+	if ((L&&U)||(L&&D)||(R&&U)||(R&&D)) return 1;
     return 0;
 }
 
