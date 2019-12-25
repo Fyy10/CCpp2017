@@ -22,6 +22,7 @@ while True:
 
 from test import *
 from client import *
+import time
 
 
 def run_server():
@@ -32,11 +33,14 @@ def run_server():
 	clients = [Client(i) for i in range(n)]
 	while True:
 		g.display()
+		start = time.time()
 		for i in range(1, n):
 			cost, order = dijkstra(0, i, g)
 			print('Node: {}, Cost: {}, Order: {}'.format(i, cost, order))
 			# sending message
 			clients[0].send(order, clients)
+		end = time.time()
+		print('Total time: {}s'.format(end - start))
 		# For convenience, use system pause to represent every 10s passed
 		os.system('pause')
 		# Generate a new graph
