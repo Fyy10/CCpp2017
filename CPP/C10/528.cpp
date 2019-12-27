@@ -1,7 +1,31 @@
 #include <iostream>
 using namespace std;
 
-//add source codes here
+class obj
+{
+public:
+	int err;
+	obj(int init)
+	{
+		err = init;
+	}
+};
+
+class A : public obj
+{
+public:
+	A(int init):obj(init)
+	{
+	}
+};
+
+class B : public obj
+{
+public:
+	B(int init):obj(init)
+	{
+	}
+};
 
 int main()
 {
