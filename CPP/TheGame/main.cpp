@@ -3,12 +3,12 @@
 
 using namespace std;
 
-set<girl*> girls;               //the set of girls
-set<girl*>::iterator itgirl;    //the iterator of set of girls
-set<FFF*> FFFs;                 //the set of FFFs
-set<FFF*>::iterator itFFF;      //the iterator of set of FFFs
+set<human*> girls;               //the set of girls
+set<human*>::iterator itgirl;    //the iterator of set of girls
+set<human*> FFFs;                 //the set of FFFs
+set<human*>::iterator itFFF;      //the iterator of set of FFFs
 human* pdf;						//dog food equals human with no moving
-boy* pusr;
+human* pusr;
 
 const int WIDTH = 800;      //size of new window
 const int HEIGHT = 500;

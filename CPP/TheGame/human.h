@@ -30,6 +30,16 @@ public:
 
     int interact(human& obj);   //0:none    1:meet
     int draw();         //return 0
+
+	//boy
+    virtual int incScore(){return 0;};			//return 0
+    virtual int getScore(){return 0;};
+    virtual int loseLife(){return 0;};			//return 0
+    virtual int getLife(){return 0;};
+    virtual int addLife(){return 0;};			//return 0
+    virtual int key_move(int){return 0;};		//return 0
+	//girl & FFF
+    virtual int self_move(){return 0;};
 };
 
 #endif // HUMAN_H
